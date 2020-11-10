@@ -7,7 +7,7 @@ Created on Wed Nov 13 14:14:15 2019
 """
 
 #%%
-%matplotlib auto
+#%matplotlib auto
 import numpy as np
 import matplotlib.pyplot as plt
 import sensor_fusion as sf

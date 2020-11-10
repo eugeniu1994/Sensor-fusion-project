@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c2a7467e-5053-49bc-8209-ae5b551c3629" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Datasets/Dataset2-20201102/description.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/Dataset2-20201102/qr_code_position_in_global_coordinate.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task1/imu_reading_task1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task2/imu_calibration_task2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task2/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/camera_module_calibration_task3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/camera_reading_task3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/motor_control_reading_task4.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/robot_speed_task4.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Screenshot from 2020-10-28 09-46-36.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls_html_66f42b2290085c69.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls_html_aa3f9758d68cb7dd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/camera_localization_task5.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/camera_tracking_task6.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/imu_tracking_task6.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/motor_control_tracking_task6.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/readme.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1k6TCF4c1PzBaPEG8o8FmYZSCrz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/DiddyBorg" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c2a7467e-5053-49bc-8209-ae5b551c3629" name="Default Changelist" comment="" />
+      <created>1605019911879</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605019911879</updated>
+      <workItem from="1605019914598" duration="390000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl" timestamp="1605020302452">
+      <screen x="0" y="27" width="1865" height="1053" />
+    </state>
+    <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl/0.27.1865.1053@0.27.1865.1053" timestamp="1605020302452" />
+  </component>
+</project>
