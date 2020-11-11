@@ -131,9 +131,8 @@ def robot_f(x,params):
     sPsi = np.sin(psi)
     uBar = 0.5*(u[0]+u[1])*MOTOR_FULL_SPEED
     xdot = np.array([-sPsi*uBar,
-    cPsi*uBar,
-    DEG_TO_RAD*u[2]
-    ])
+            cPsi*uBar,
+            DEG_TO_RAD*u[2]])
     return xdot
 
 def robot_jac(x,params):
