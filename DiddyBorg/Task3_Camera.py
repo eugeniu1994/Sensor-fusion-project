@@ -59,40 +59,29 @@ class motor(object):
 
     def Compute_Robot_Speed(self):
         file = 'Datasets/data/task4/robot_speed_task4.csv'
-        Robot = pd.read_csv(file)
-        timesteps = np.array(Robot.iloc[:, 0:1]).squeeze(-1)
-        distance_cm = np.array(Robot.iloc[:, 1:2]).squeeze(-1)
+        Robot = pd.read_csv(file, header=None)
+        timesteps = np.array(Robot.iloc[:, 1:2]).squeeze(-1)
+        distance_cm = np.array(Robot.iloc[:, 0:1]).squeeze(-1)
 
+        t = np.linspace(0,len(timesteps), num=len(timesteps))
         print('timesteps:{}, distance_cm:{}'.format(np.shape(timesteps), np.shape(distance_cm)))
         fig, axs = plt.subplots(2)
         fig.suptitle('Position and Velocity')
-        axs[0].plot(timesteps,distance_cm, label='Position')
+        print('t {}, distance_cm:{}'.format(np.shape(t), np.shape(distance_cm)))
+        axs[0].plot(t,distance_cm, "o", label='Position')
         axs[0].set(xlabel='time', ylabel='Position')
 
+        v = 40/timesteps  #derivative of position / delta t => p(i+1)-p(i) / (t(i+1)-t(i))
         #velocity is the derivative of the position/distance, so
-        v = np.zeros_like(distance_cm)
-        dt = timesteps[1] - timesteps[0]  # time step
-        '''N = len(distance_cm)-1
-        for i in range(1, N - 1):
-            v[i] = (distance_cm[i + 1] - distance_cm[i - 1]) / (2 * dt)
-        v[0] = (distance_cm[1] - distance_cm[0]) / dt
-        v[N] = (distance_cm[N] - distance_cm[N - 1]) / dt
-        print(v)'''
 
-        #vectorized form
-        v[1:-1] = (distance_cm[2:] - distance_cm[:-2]) / (dt*2)
-        v[0] = (distance_cm[1] - distance_cm[0]) / dt
-        v[-1] = (distance_cm[-1] - distance_cm[-2]) / dt
-        print('velocity ',v)
-
-        axs[1].plot(timesteps, v, label='Velocity')
+        axs[1].plot(t, v, label='Velocity')
         axs[1].set(xlabel='time', ylabel='Velocity')
 
         plt.show()
 
 if __name__ == '__main__':
-    csvFile = 'Datasets/data/task3/camera_reading_task3.csv'
-    Camera = camera(csvFile)
+    #csvFile = 'Datasets/data/task3/camera_reading_task3.csv'
+    #Camera = camera(csvFile)
     #Camera.Calibrate_camera()
 
     #Task4
