@@ -67,8 +67,6 @@ class accelerometer(object):
         ax.set_title("Roll and Pitch", va='bottom')
         plt.show()
 
-
-
     #Task2
     def Compute_Bias_Gain(self):
         x = np.array(self.linear_xyz.iloc[:, 0])
@@ -148,17 +146,19 @@ class gyroscope(object):
 
         b = [x, y,z]
         self.bias = b
+        print('bias: ',self.bias)
 
     def Compute_variance(self, diag = True):
         R = np.cov(self.degree_xyz, rowvar=False)
         if diag:
             self.R = R
-            #print(self.R)
+            print(self.R)
             return np.diag(np.diag(R))
         else:
             self.R = R
-            #print(self.R)
+            print(self.R)
             return R
+
 
     def calibrate_Gyro(self):
         degree_xyz = np.array(self.degree_xyz)
@@ -250,12 +250,12 @@ if __name__ == '__main__':
     # csv for task 1
     csvFile = 'Datasets/data/task1/imu_reading_task1.csv'
     Accelerometer = accelerometer(csvFile)
-    Accelerometer.Visualize_Data() #Task 1a
+    #Accelerometer.Visualize_Data() #Task 1a
 
     Gyroscope = gyroscope(csvFile)
-    Gyroscope.Vizualize_Data() #Task 1a
-    #Gyroscope.Compute_bias() #Task 1b
-    #Gyroscope.Compute_variance() #Task 1c'''
+    #Gyroscope.Vizualize_Data() #Task 1a
+    Gyroscope.Compute_bias() #Task 1b
+    Gyroscope.Compute_variance() #Task 1c'''
 
     #Task 2 --------------------------------------------------
     '''csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
