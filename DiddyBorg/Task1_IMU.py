@@ -16,7 +16,7 @@ class accelerometer(object):
         self.read_file()
 
     def read_file(self):
-        IMU = pd.read_csv(self.csvFile)
+        IMU = pd.read_csv(self.csvFile, header=None)
         self.timesteps = IMU.iloc[:, 0:1]
         self.linear_xyz = IMU.iloc[:, 1:4]
         #print('self.linear_xyz ', np.shape(self.linear_xyz))
@@ -52,6 +52,22 @@ class accelerometer(object):
         ax.legend()
         ax.set_title("Roll and Pitch", va='bottom')
         plt.show()
+
+        ax = plt.subplot(111)
+        ax.plot(self.roll_pitch.iloc[:,0], label='roll')
+        ax.plot(self.roll_pitch.iloc[:,1], label='pitch')
+        ax.set_ylim([-180, 180])
+        #ax.set_rmax(2)
+        #ax.set_rticks([0.5, 1, 1.5, 2])  # Less radial ticks
+        #ax.set_rlabel_position(-22.5)  # Move radial labels away from plotted line
+        ax.set_ylabel("Roll and Pitch in degrees")
+        ax.set_xlabel("Timestamp ")
+        ax.grid(True)
+        ax.legend()
+        ax.set_title("Roll and Pitch", va='bottom')
+        plt.show()
+
+
 
     #Task2
     def Compute_Bias_Gain(self):
@@ -90,7 +106,7 @@ class gyroscope(object):
         self.read_file()
 
     def read_file(self):
-        GYRO = pd.read_csv(self.csvFile)
+        GYRO = pd.read_csv(self.csvFile, header=None)
         self.timesteps = GYRO.iloc[:, 0:1]
         self.degree_xyz = GYRO.iloc[:, 6:9]
         #print('degree_xyz', np.shape(self.degree_xyz))
@@ -107,9 +123,22 @@ class gyroscope(object):
         plt.plot(x)
         plt.plot(y)
         plt.plot(z)
+        plt.ylim([-180, 180])
         plt.legend(["X", "Y", "Z"])
         plt.xlabel("Timestamp")
         plt.ylabel("Angular velocity [degree/s]")
+        plt.show()
+
+        x = np.array(self.magnetometer_xyz.iloc[:, 0])
+        y = np.array(self.magnetometer_xyz.iloc[:, 1])
+        z = np.array(self.magnetometer_xyz.iloc[:, 2])
+        # plot the magnetometer_xyz
+        plt.plot(x)
+        plt.plot(y)
+        plt.plot(z)
+        plt.legend(["X", "Y", "Z"])
+        plt.xlabel("Timestamp")
+        plt.ylabel("magnetometer")
         plt.show()
 
     def Compute_bias(self):
@@ -130,9 +159,6 @@ class gyroscope(object):
             self.R = R
             #print(self.R)
             return R
-
-
-
 
     def calibrate_Gyro(self):
         degree_xyz = np.array(self.degree_xyz)
@@ -222,23 +248,23 @@ class gyroscope(object):
 
 if __name__ == '__main__':
     # csv for task 1
-    '''csvFile = 'Datasets/data/task1/imu_reading_task1.csv'
+    csvFile = 'Datasets/data/task1/imu_reading_task1.csv'
     Accelerometer = accelerometer(csvFile)
     Accelerometer.Visualize_Data() #Task 1a
 
     Gyroscope = gyroscope(csvFile)
     Gyroscope.Vizualize_Data() #Task 1a
-    Gyroscope.Compute_bias() #Task 1b
-    Gyroscope.Compute_variance() #Task 1c'''
+    #Gyroscope.Compute_bias() #Task 1b
+    #Gyroscope.Compute_variance() #Task 1c'''
 
     #Task 2 --------------------------------------------------
-    csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
+    '''csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
     Accelerometer = accelerometer(csvFile)
     Accelerometer.Compute_Bias_Gain()
 
     Gyroscope = gyroscope(csvFile)
     Gyroscope.Compute_variance()
-    Gyroscope.Compute_bias()
+    Gyroscope.Compute_bias()'''
 
     #A = np.diag(Accelerometer.k)
     #b = Accelerometer.b
