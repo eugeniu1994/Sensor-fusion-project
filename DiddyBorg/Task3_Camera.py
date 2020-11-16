@@ -72,9 +72,19 @@ class motor(object):
         axs[0].plot(t,distance_cm, "o", label='Position')
         axs[0].set(xlabel='time', ylabel='Position')
 
-        v = 40/timesteps  #derivative of position / delta t => p(i+1)-p(i) / (t(i+1)-t(i))
+        # From mid value theorem of integration, we know there exists a point between (a, b) 
+        # that the derivative of the function f is equal to (f(a) - f(b))/(a - b)
+        # in our case the function f is the robot's position, and derivative is its velocity
+        velocity = (distance_cm - np.pad(distance_cm, (1, 0))[0:distance_cm.size])/timesteps
+        # now we know the robot's velocity equals to the mean dx/dt at sometime between a and b
+        # we just choose the mid point of (a, b)
+        derived_time = (np.cumsum(timesteps) + np.pad(np.cumsum(timesteps), (1, 0))[0:timesteps.size])/2
+        # v = 40/timesteps  #derivative of position / delta t => p(i+1)-p(i) / (t(i+1)-t(i))
         #velocity is the derivative of the position/distance, so
 
+        # assume the robot start at time zero, so its velocity is zero.
+        t = np.pad(derived_time, (1, 0)) 
+        v = np.pad(velocity, (1, 0))
         axs[1].plot(t, v, label='Velocity')
         axs[1].set(xlabel='time', ylabel='Velocity')
 
@@ -86,5 +96,5 @@ if __name__ == '__main__':
     Camera.Calibrate_camera()
 
     #Task4
-    #Motor = motor()
-    #Motor.Compute_Robot_Speed()
+    Motor = motor()
+    Motor.Compute_Robot_Speed()
