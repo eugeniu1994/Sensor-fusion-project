@@ -25,13 +25,14 @@ class camera(object):
         print('distance_cm:{}, height_px:{}'.format(np.shape(distance_cm),np.shape(height_px)))
 
 
-        A_matrix = np.vstack([1 / height_px, np.ones(len(1 / height_px))]).T
-        #print('A_matrix ', np.shape(A_matrix))
+        A_matrix = np.vstack([1 / height_px, np.ones(len(height_px))]).T
+        print('A_matrix ', np.shape(A_matrix))
 
         gradient, bias = np.linalg.lstsq(A_matrix, distance_cm, rcond=None)[0]
+
         self.bias = bias
         self.F = gradient / self.h0
-
+        print('Gradient ',gradient)
         print("Focal length:{}, Bias:{} ".format(self.F, self.bias))
         plt.plot(1 / height_px, distance_cm, "o", label='data')
         plt.plot(1 / height_px, gradient*(1/height_px) + bias, label='linear')
@@ -80,10 +81,10 @@ class motor(object):
         plt.show()
 
 if __name__ == '__main__':
-    #csvFile = 'Datasets/data/task3/camera_reading_task3.csv'
-    #Camera = camera(csvFile)
-    #Camera.Calibrate_camera()
+    csvFile = 'Datasets/data/task3/camera_reading_task3.csv'
+    Camera = camera(csvFile)
+    Camera.Calibrate_camera()
 
     #Task4
-    Motor = motor()
-    Motor.Compute_Robot_Speed()
+    #Motor = motor()
+    #Motor.Compute_Robot_Speed()

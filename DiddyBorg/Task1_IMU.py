@@ -67,8 +67,6 @@ class accelerometer(object):
         ax.set_title("Roll and Pitch", va='bottom')
         plt.show()
 
-
-
     #Task2
     def Compute_Bias_Gain(self):
         x = np.array(self.linear_xyz.iloc[:, 0])
@@ -76,13 +74,12 @@ class accelerometer(object):
         z = np.array(self.linear_xyz.iloc[:, 2])
 
         def get_Data(values): #found from other implementation
-            v_d = []
-            v_u = []
-            for v in values:
-                if v > 0.5:
-                    v_u.append(v)
-                elif v < -0.5:
-                    v_d.append(v)
+            v_d,v_u = [],[]
+            for i in values:
+                if i > 0.5:
+                    v_u.append(i)
+                elif i < -0.5:
+                    v_d.append(i)
             return np.mean(v_u), np.mean(v_d)
 
         x_u, x_d = get_Data(x)  #  up and down for x
@@ -148,17 +145,19 @@ class gyroscope(object):
 
         b = [x, y,z]
         self.bias = b
+        print('bias: ',self.bias)
 
     def Compute_variance(self, diag = True):
         R = np.cov(self.degree_xyz, rowvar=False)
         if diag:
             self.R = R
-            #print(self.R)
+            print(self.R)
             return np.diag(np.diag(R))
         else:
             self.R = R
-            #print(self.R)
+            print(self.R)
             return R
+
 
     def calibrate_Gyro(self):
         degree_xyz = np.array(self.degree_xyz)
@@ -249,22 +248,75 @@ class gyroscope(object):
 if __name__ == '__main__':
     # csv for task 1
     csvFile = 'Datasets/data/task1/imu_reading_task1.csv'
-    Accelerometer = accelerometer(csvFile)
-    Accelerometer.Visualize_Data() #Task 1a
+    #Accelerometer = accelerometer(csvFile)
+    #Accelerometer.Visualize_Data() #Task 1a
 
-    Gyroscope = gyroscope(csvFile)
-    Gyroscope.Vizualize_Data() #Task 1a
+    #Gyroscope = gyroscope(csvFile)
+    #Gyroscope.Vizualize_Data() #Task 1a
     #Gyroscope.Compute_bias() #Task 1b
     #Gyroscope.Compute_variance() #Task 1c'''
 
     #Task 2 --------------------------------------------------
-    '''csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
+    csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
     Accelerometer = accelerometer(csvFile)
     Accelerometer.Compute_Bias_Gain()
+    #Accelerometer.Visualize_Data()
+    print('b ', Accelerometer.b)
+    print('k ', Accelerometer.k)
+    b = Accelerometer.b
 
-    Gyroscope = gyroscope(csvFile)
-    Gyroscope.Compute_variance()
-    Gyroscope.Compute_bias()'''
+    A = np.diag(Accelerometer.k)
+    y = np.array(Accelerometer.linear_xyz)
+    print(A)
+    b = np.array(b)[:, np.newaxis]
+    print('b:{}'.format(np.shape(b)))
+    t = np.linalg.inv(A) @ y.T + b
+    print('t ', np.shape(t))
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import sklearn.linear_model
+    from mpl_toolkits.mplot3d import Axes3D
+
+    X_train = np.random.rand(2000).reshape(1000, 2) * 60
+    y_train = (X_train[:, 0] ** 2) + (X_train[:, 1] ** 2)
+    print('X_train:{}, y_train:{}'.format(np.shape(X_train), np.shape(y_train)))
+
+    X_test = np.random.rand(200).reshape(100, 2) * 60
+    y_test = (X_test[:, 0] ** 2) + (X_test[:, 1] ** 2)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(X_train[:, 0], X_train[:, 1], y_train, marker='.', color='red')
+    ax.set_xlabel("X1")
+    ax.set_ylabel("X2")
+    ax.set_zlabel("y")
+
+    model = sklearn.linear_model.LinearRegression()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+
+    print("MAE: {}".format(np.abs(y_test - y_pred).mean()))
+    print("RMSE: {}".format(np.sqrt(((y_test - y_pred) ** 2).mean())))
+
+    coefs = model.coef_
+    intercept = model.intercept_
+    xs = np.tile(np.arange(61), (61, 1))
+    ys = np.tile(np.arange(61), (61, 1)).T
+    zs = xs * coefs[0] + ys * coefs[1] + intercept
+    print("Equation: y = {:.2f} + {:.2f}x1 + {:.2f}x2".format(intercept, coefs[0],
+                                                              coefs[1]))
+
+    ax.plot_surface(xs, ys, zs, alpha=0.5)
+    plt.show()
+
+
+
+
+    #Gyroscope = gyroscope(csvFile)
+    #Gyroscope.Vizualize_Data()
+    #Gyroscope.Compute_variance()
+    #Gyroscope.Compute_bias()
 
     #A = np.diag(Accelerometer.k)
     #b = Accelerometer.b
