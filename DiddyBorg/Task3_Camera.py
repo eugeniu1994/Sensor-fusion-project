@@ -63,28 +63,41 @@ class motor(object):
         Robot = pd.read_csv(file, header=None)
         timesteps = np.array(Robot.iloc[:, 1:2]).squeeze(-1)
         distance_cm = np.array(Robot.iloc[:, 0:1]).squeeze(-1)
-
+        print(timesteps)
+        print(distance_cm)
         t = np.linspace(0,len(timesteps), num=len(timesteps))
         print('timesteps:{}, distance_cm:{}'.format(np.shape(timesteps), np.shape(distance_cm)))
         fig, axs = plt.subplots(2)
         fig.suptitle('Position and Velocity')
         print('t {}, distance_cm:{}'.format(np.shape(t), np.shape(distance_cm)))
-        axs[0].plot(t,distance_cm, "o", label='Position')
+
+
+        timesteps_t = []
+        for i in timesteps:
+            cur_time = timesteps_t[-1] + i if len(timesteps_t) > 0 else i
+            timesteps_t.append(cur_time)
+
+        print(timesteps_t)
+
+
+
+
+        axs[0].scatter(timesteps_t,distance_cm, label='Position')
         axs[0].set(xlabel='time', ylabel='Position')
 
         v = 40/timesteps  #derivative of position / delta t => p(i+1)-p(i) / (t(i+1)-t(i))
         #velocity is the derivative of the position/distance, so
 
-        axs[1].plot(t, v, label='Velocity')
+        axs[1].plot(timesteps_t, v,marker='o', linestyle='dashed', label='Velocity')
         axs[1].set(xlabel='time', ylabel='Velocity')
 
         plt.show()
 
 if __name__ == '__main__':
     csvFile = 'Datasets/data/task3/camera_reading_task3.csv'
-    Camera = camera(csvFile)
-    Camera.Calibrate_camera()
+    #Camera = camera(csvFile)
+    #Camera.Calibrate_camera()
 
     #Task4
-    #Motor = motor()
-    #Motor.Compute_Robot_Speed()
+    Motor = motor()
+    Motor.Compute_Robot_Speed()

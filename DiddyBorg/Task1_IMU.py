@@ -269,46 +269,26 @@ if __name__ == '__main__':
     y = np.array(Accelerometer.linear_xyz)
     print(A)
     b = np.array(b)[:, np.newaxis]
-    print('b:{}'.format(np.shape(b)))
-    t = np.linalg.inv(A) @ y.T + b
-    print('t ', np.shape(t))
+    print('A:{} b:{}'.format(np.shape(A), np.shape(b)))
+    G = np.linalg.inv(A)
+    print(G)
+    x = np.array(Accelerometer.linear_xyz).T
+    print('x ', np.shape(x))
+    y = G @ x + b
+    print('y ', np.shape(y))
 
-    import matplotlib.pyplot as plt
-    import numpy as np
-    import sklearn.linear_model
-    from mpl_toolkits.mplot3d import Axes3D
+    y_tilde = y - b
+    print('y_tilde ', np.shape(y_tilde))
 
-    X_train = np.random.rand(2000).reshape(1000, 2) * 60
-    y_train = (X_train[:, 0] ** 2) + (X_train[:, 1] ** 2)
-    print('X_train:{}, y_train:{}'.format(np.shape(X_train), np.shape(y_train)))
+    a1 = G.T @ G
+    print('a1 ', np.shape(a1))
+    a2 = G.T @ y_tilde
+    print('a2 ', np.shape(a2))
+    x_WLS = np.linalg.solve(a1, a2)
+    print('x_WLS ', np.shape(x_WLS))
+    print(np.sum(x_WLS-x)**2)
 
-    X_test = np.random.rand(200).reshape(100, 2) * 60
-    y_test = (X_test[:, 0] ** 2) + (X_test[:, 1] ** 2)
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(X_train[:, 0], X_train[:, 1], y_train, marker='.', color='red')
-    ax.set_xlabel("X1")
-    ax.set_ylabel("X2")
-    ax.set_zlabel("y")
-
-    model = sklearn.linear_model.LinearRegression()
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-
-    print("MAE: {}".format(np.abs(y_test - y_pred).mean()))
-    print("RMSE: {}".format(np.sqrt(((y_test - y_pred) ** 2).mean())))
-
-    coefs = model.coef_
-    intercept = model.intercept_
-    xs = np.tile(np.arange(61), (61, 1))
-    ys = np.tile(np.arange(61), (61, 1)).T
-    zs = xs * coefs[0] + ys * coefs[1] + intercept
-    print("Equation: y = {:.2f} + {:.2f}x1 + {:.2f}x2".format(intercept, coefs[0],
-                                                              coefs[1]))
-
-    ax.plot_surface(xs, ys, zs, alpha=0.5)
-    plt.show()
 
 
 
