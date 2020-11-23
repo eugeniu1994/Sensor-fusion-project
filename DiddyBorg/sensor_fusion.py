@@ -183,6 +183,10 @@ class Sensor:
             raise Exception('Too many columns')
 
 
+
+
+
+
 ROBOT_STATE_COLUMNS = [('body x velocity','m/s'),
         ('body y velocity','m/s'),
         ('body yaw angular velocity','deg/s'),
@@ -190,7 +194,6 @@ ROBOT_STATE_COLUMNS = [('body x velocity','m/s'),
         ('local x velocity','m'),
         ('local y velocity','m/s'),
         ('local yaw angle','deg')]
-
 class Filter:
     def __init__(self,name,num_state,sensors,init_state,P_init,state_process_variance=None):
         self.__name = name
@@ -285,7 +288,6 @@ class Filter:
     @property
     def current_time(self):
         return self.__current_sample_index*self.__time_sampling
-
 class KalmanFilter(Filter):
     def __init__(self,num_state,sensors,init_state,state_process_variance=None):
         super().__init__(self,"Kalman Filter",num_state,sensors,init_state,state_process_variance=state_process_variance)

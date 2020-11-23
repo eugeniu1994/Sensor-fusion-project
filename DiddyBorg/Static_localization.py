@@ -7,7 +7,7 @@ Created on Wed Nov 13 14:14:15 2019
 """
 
 #%%
-#%matplotlib auto
+%matplotlib auto
 import numpy as np
 import matplotlib.pyplot as plt
 import sensor_fusion as sf
@@ -50,13 +50,13 @@ for i in range(0):
 #%%
 y_raw = Camera.get_measurement()
 
-weight = y_raw[:,3]
+width = y_raw[:,3]
 height = y_raw[:,4]
 c_x = y_raw[:,1]
 
 dist = rnmf.QRCODE_SIDE_LENGTH*rnmf.PERCEIVED_FOCAL_LENGTH/height
 direct = np.arctan2(c_x,rnmf.PERCEIVED_FOCAL_LENGTH) 
-angle_qr = np.arccos(np.minimum(weight,height)/height)
+angle_qr = np.arccos(np.minimum(width,height)/height)
 
 corrected_dist = dist/np.cos(direct) + 0.5*rnmf.QRCODE_SIDE_LENGTH*np.sin(angle_qr)
 y_raw[:,5] = corrected_dist#dist/np.cos(direct)

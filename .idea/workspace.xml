@@ -1,33 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c2a7467e-5053-49bc-8209-ae5b551c3629" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Datasets/Dataset2-20201102/description.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/Dataset2-20201102/qr_code_position_in_global_coordinate.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task1/imu_reading_task1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task2/imu_calibration_task2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task2/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/camera_module_calibration_task3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/camera_reading_task3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task3/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/motor_control_reading_task4.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task4/robot_speed_task4.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Screenshot from 2020-10-28 09-46-36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls_html_66f42b2290085c69.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/Walls_html_aa3f9758d68cb7dd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/camera_localization_task5.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task5/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/camera_tracking_task6.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/imu_tracking_task6.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/motor_control_tracking_task6.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Datasets/data/task6/readme.txt" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/DiddyBorg/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DiddyBorg/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task4.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task5_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/Dataset2-20201102/description.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task2/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task3/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task4/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Screenshot from 2020-10-28 09-46-36.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls_html_66f42b2290085c69.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls_html_aa3f9758d68cb7dd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task6/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Diddyborg_python/IMU.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/Diddyborg_python/IMU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Static_localization.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/Static_localization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task1_IMU.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task3_Camera.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task5_Localization.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/Walls.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/localization_dynamic.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/localization_dynamic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/robot_n_measurement_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/robot_n_measurement_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/sensor_fusion.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/sensor_fusion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DiddyBorg/tmp.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1_a1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_guide.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/project_guide.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,8 +91,127 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/DiddyBorg" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
+  <component name="RunManager" selected="Python.task5_new">
+    <configuration name="task2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SensorFusionProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SensorFusionProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task4" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SensorFusionProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task4.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SensorFusionProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task5.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="task5_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SensorFusionProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/task5_new.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.task5_new" />
+        <item itemvalue="Python.task5" />
+        <item itemvalue="Python.task3" />
+        <item itemvalue="Python.task4" />
+        <item itemvalue="Python.task2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -60,10 +229,46 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="445" y="248" width="520" height="296" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1606047241350">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="445" y="248" width="520" height="296" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606047241350" />
     <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl" timestamp="1605020302452">
       <screen x="0" y="27" width="1865" height="1053" />
     </state>
     <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl/0.27.1865.1053@0.27.1865.1053" timestamp="1605020302452" />
+    <state width="1286" height="190" key="GridCell.Tab.0.bottom" timestamp="1606128892316">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state width="1286" height="190" key="GridCell.Tab.0.bottom/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
+    <state width="1286" height="190" key="GridCell.Tab.0.center" timestamp="1606128892316">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state width="1286" height="190" key="GridCell.Tab.0.center/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
+    <state width="1286" height="190" key="GridCell.Tab.0.left" timestamp="1606128892316">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state width="1286" height="190" key="GridCell.Tab.0.left/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
+    <state width="1286" height="190" key="GridCell.Tab.0.right" timestamp="1606128892316">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state width="1286" height="190" key="GridCell.Tab.0.right/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
+    <state x="198" y="31" key="SettingsEditor" timestamp="1606041711471">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="198" y="31" key="SettingsEditor/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606041711471" />
   </component>
 </project>
