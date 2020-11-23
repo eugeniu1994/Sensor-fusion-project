@@ -20,52 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2a7467e-5053-49bc-8209-ae5b551c3629" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DiddyBorg/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DiddyBorg/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task3.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task4.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task5.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task5_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/Dataset2-20201102/description.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task2/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task3/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task4/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Screenshot from 2020-10-28 09-46-36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls_html_66f42b2290085c69.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/Walls_html_aa3f9758d68cb7dd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task5/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Datasets/data/task6/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Diddyborg_python/IMU.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/Diddyborg_python/IMU.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Static_localization.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/Static_localization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task1_IMU.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task3_Camera.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Task5_Localization.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/Walls.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/localization_dynamic.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/localization_dynamic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/robot_n_measurement_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/robot_n_measurement_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/sensor_fusion.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/sensor_fusion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/DiddyBorg/simulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DiddyBorg/tmp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1_a1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task1a5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task2_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results/Plot_task1_a/task3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_guide.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/project_guide.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task1.py" beforeDir="false" afterPath="$PROJECT_DIR$/task1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

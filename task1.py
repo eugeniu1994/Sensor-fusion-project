@@ -56,7 +56,7 @@ print("The bias for gyroscope is {:.2f}, {:.2f}, {:.2f} for x, y, z respectively
 
 
 # task 1c
-R = np.cov(imu[:, 1:12].T)
+R = np.diag(np.diag(np.cov(imu[:, 1:12].T)))
 print("The variance matrix of the IMU measurement is:")
 print(R)
 
