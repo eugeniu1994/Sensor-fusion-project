@@ -21,7 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c2a7467e-5053-49bc-8209-ae5b551c3629" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/task1.py" beforeDir="false" afterPath="$PROJECT_DIR$/task1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task3.py" beforeDir="false" afterPath="$PROJECT_DIR$/task3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task3a_figure/Relation_distanceQR_and_detected_height.png" beforeDir="false" afterPath="$PROJECT_DIR$/task3a_figure/Relation_distanceQR_and_detected_height.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,11 +48,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../reinforcement_learning_project" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.task5_new">
+  <component name="RunManager" selected="Python.task3">
     <configuration name="task2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SensorFusionProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,9 +160,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.task3" />
         <item itemvalue="Python.task5_new" />
         <item itemvalue="Python.task5" />
-        <item itemvalue="Python.task3" />
         <item itemvalue="Python.task4" />
         <item itemvalue="Python.task2" />
       </list>
@@ -202,26 +203,27 @@
       <screen x="55" y="27" width="1311" height="741" />
     </state>
     <state x="445" y="248" width="520" height="296" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606047241350" />
-    <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl" timestamp="1605020302452">
-      <screen x="0" y="27" width="1865" height="1053" />
+    <state x="940" y="348" width="376" height="341" key="FileChooserDialogImpl" timestamp="1606151547661">
+      <screen x="55" y="27" width="1311" height="741" />
     </state>
     <state x="1259" y="483" width="424" height="484" key="FileChooserDialogImpl/0.27.1865.1053@0.27.1865.1053" timestamp="1605020302452" />
-    <state width="1286" height="190" key="GridCell.Tab.0.bottom" timestamp="1606128892316">
+    <state x="940" y="348" width="376" height="341" key="FileChooserDialogImpl/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606151547661" />
+    <state width="1286" height="171" key="GridCell.Tab.0.bottom" timestamp="1606152078780">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state width="1286" height="190" key="GridCell.Tab.0.bottom/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
-    <state width="1286" height="190" key="GridCell.Tab.0.center" timestamp="1606128892316">
+    <state width="1286" height="171" key="GridCell.Tab.0.bottom/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606152078780" />
+    <state width="1286" height="171" key="GridCell.Tab.0.center" timestamp="1606152078780">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state width="1286" height="190" key="GridCell.Tab.0.center/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
-    <state width="1286" height="190" key="GridCell.Tab.0.left" timestamp="1606128892316">
+    <state width="1286" height="171" key="GridCell.Tab.0.center/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606152078780" />
+    <state width="1286" height="171" key="GridCell.Tab.0.left" timestamp="1606152078779">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state width="1286" height="190" key="GridCell.Tab.0.left/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
-    <state width="1286" height="190" key="GridCell.Tab.0.right" timestamp="1606128892316">
+    <state width="1286" height="171" key="GridCell.Tab.0.left/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606152078779" />
+    <state width="1286" height="171" key="GridCell.Tab.0.right" timestamp="1606152078780">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state width="1286" height="190" key="GridCell.Tab.0.right/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606128892316" />
+    <state width="1286" height="171" key="GridCell.Tab.0.right/55.27.1311.741/1366.0.1680.1050@55.27.1311.741" timestamp="1606152078780" />
     <state x="198" y="31" key="SettingsEditor" timestamp="1606041711471">
       <screen x="55" y="27" width="1311" height="741" />
     </state>

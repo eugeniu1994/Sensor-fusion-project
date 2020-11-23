@@ -8,7 +8,7 @@ file = "/Dataset2/dataset2/data/task3/camera_module_calibration_task3.csv"
 path = os.getcwd() + file
 data = np.genfromtxt(path, delimiter=',')
 
-dist = data[:, 0]
+dist = data[:, 0] + 5 + 1.7
 height = data[:, 1]
 
 a_11 = np.sum((1./height)**2)
@@ -24,6 +24,7 @@ matrixB = np.array([b_1, b_2])
 matrixB = np.expand_dims(matrixB, axis=1)
 
 [k, b] = np.linalg.inv(matrixA) @ matrixB
+
 x = np.linspace(0.005, 0.025, 1000)
 y = k * x + b
 
