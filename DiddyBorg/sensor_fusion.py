@@ -99,6 +99,7 @@ class Sensor:
 
     def reset_sampling_index(self):
         self.__current_sample_index = 0
+
     #GETTER
     @property
     def name(self):

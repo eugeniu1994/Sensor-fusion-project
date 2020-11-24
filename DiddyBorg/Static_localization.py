@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 13 14:14:15 2019
-
-@author: muhammad
-"""
 
 #%%
 #%matplotlib auto
@@ -19,12 +13,20 @@ from scipy.linalg import expm
 import lsqSolve as lsqS
 sns.set()
 #%%
-parent_path = pathlib.Path.home()
-parent_path = parent_path/'Dropbox/09. Aalto Postdoc/DiddyBorg_experiment'
-Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=parent_path/'test-run-camera.csv',is_linear=False,start_index=0)
+#parent_path = pathlib.Path.home()
+#parent_path = parent_path/'Dropbox/09. Aalto Postdoc/DiddyBorg_experiment'
+#Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=parent_path/'test-run-camera.csv',is_linear=False,start_index=0)
+camera_file = 'Datasets/data/task5/camera_localization_task5.csv'
+Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=camera_file,is_linear=False,start_index=0)
+
 #%%
 
+#heading \phi = 90 degree
 x_true = np.array([17,60,0])
+#print('np.radians(90) ',np.radians(90))
+
+x_true = np.array([61, 33.9, 90])
+
 x_init = x_true + np.random.randn(3)
 
 R_one_diag = np.array([2,10])
@@ -49,13 +51,13 @@ for i in range(0):
     Camera.get_measurement()
 #%%
 y_raw = Camera.get_measurement()
-
+print('y_raw ', np.shape(y_raw))
 weight = y_raw[:,3]
 height = y_raw[:,4]
 c_x = y_raw[:,1]
 
 dist = rnmf.QRCODE_SIDE_LENGTH*rnmf.PERCEIVED_FOCAL_LENGTH/height
-direct = np.arctan2(c_x,rnmf.PERCEIVED_FOCAL_LENGTH) 
+direct = np.arctan2(c_x,rnmf.PERCEIVED_FOCAL_LENGTH)
 angle_qr = np.arccos(np.minimum(weight,height)/height)
 
 corrected_dist = dist/np.cos(direct) + 0.5*rnmf.QRCODE_SIDE_LENGTH*np.sin(angle_qr)
@@ -74,12 +76,18 @@ params_LSQ['Rinv'] = np.diag(1/np.diag(R))
 xhat_history_GN, J_history_GN = lsqS.lsqsolve(y,rnmf.h_cam,rnmf.H_cam,x_init,params_LSQ,method='gauss-newton')
 
 #%%
-# plt.figure()
-#plt.plot(x[:,0],x[:,1],'-ok',linewidth=0.5,markersize=2)
+plt.figure()
+plt.plot(xhat_history_GN[:,0],xhat_history_GN[:,1],'-ok',linewidth=0.5,markersize=2)
+plt.show()
+
 fig, ax = plt.subplots(1,3)
 ax[0].plot(xhat_history_GN[0,:])
 ax[1].plot(xhat_history_GN[1,:])
-ax[2].plot(xhat_history_GN[2,:]*rnmf.RAD_TO_DEG)
+#ax[2].plot(xhat_history_GN[2,:]*rnmf.RAD_TO_DEG)
+ax[2].plot(xhat_history_GN[2,:])
+
 plt.show()
 x_init = xhat_history_GN[:,-1]
+print('np.radians(90) ',np.radians(90))
+print('x_init ',x_init)
 # %%

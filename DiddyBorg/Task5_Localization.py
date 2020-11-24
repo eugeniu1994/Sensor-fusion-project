@@ -24,7 +24,7 @@ class Localization():
         #Try to identify how many qr codes are detected by the camera at each time step
         #from the record log file.
         grouped = self.cam.groupby(self.cam.columns[0]).size()
-        #print(grouped)
+        print(grouped)
 
     def localize(self):
         self.estimatedPos = []
@@ -62,7 +62,7 @@ class Localization():
             di = np.sqrt((s[0]-x[0])**2 + (s[1]-x[1])**2)
             y_ = s[1]-x[1]
             x_ = s[0]-x[0]
-            phi= (np.arctan(y_/x_)) - x[2]
+            phi= (np.arctan2(y_,x_)) - x[2]
             return np.array([[di],[phi]])   #(2 x 1)
 
         def Gx(x,s): #gradient of g
@@ -84,26 +84,27 @@ class Localization():
         sigma = 0.001
         R_inv = np.eye(2) / (sigma * sigma)  # cache the inverse
 
-        y = g(x=x,s=[0,0]) #(2, 1)
+        x_init = [0,0,0]
+        y = g(x=x_init,s=[0,0]) #(2, 1)
         print('y:', np.shape(y))
 
         iteration_end = len(self.cam)
-        #1) take each qr code
-        #2) estimate Xls for each qr code
-        #3) take the mean Xls and move on
-        # time, qr number, Cx, Cy, w,h, di, phi
+        # time, qr number, Cx, Cy, w,h, di, phi => convert Cx,Cy to cm
         camera_data = np.array(self.cam)
         print('camera_data ',np.shape(camera_data))
+
         qr_pos = np.array(self.qr)
         print('qr_pos ', np.shape(qr_pos))
+
+        iteration_end = 10
         for j in range(iteration_end):
             print()
             qr_code = int(camera_data[j,1])
             filtered = np.array(qr_pos[(qr_pos[:,0]==qr_code)]).squeeze()
             s = [filtered[1],filtered[2]] #mid_point_x_cm,mid_point_y_cm landmark
-            #print('s ',s)
+            print('s ',s)
 
-            gj = g(x_history[j],s)     #(2, 1)
+            gj = g(x_history[j],s)     #(2, 1) -> measurement model
             Gj = Gx(x_history[j],s).T  #(3, 2)
 
             #y_tilde = np.sum(y - gj, axis=0) / N  #(2, 1)
@@ -116,7 +117,30 @@ class Localization():
             x_history.append(x_WLS)
             print('x_WLS ',x_WLS)
 
+
+            #group by timesteps ->
+            #each timestep is one measurement (more qr codes)
+
+
 if __name__ == '__main__':
     loc = Localization()
     #loc.localize()
-    loc.Estimate()
+    #loc.Estimate()
+
+    '''import sympy as sp
+    from sympy import *
+
+    x1, x2, x3, s1,s2 = sp.symbols('x1,x2,x3,s1,s2', real=True)
+    f1 = sp.sqrt((s1-x1)**2 + (s2-x2)**2)             #di
+    f2 = (sp.atan2((s2 - x2),(s1-x1))) - x3          #phi
+
+    F = Matrix([f1, f2])
+    print('F ', np.shape(F))
+    J = F.jacobian([x1, x2, x3])
+    print('J ', np.shape(J))
+    print(J)
+    #J = F.jacobian([x1, x2, x3]).subs([(x1, 0), (x2, 0), (x3, 0), (s1, 1), (s2, 2)])
+    print()
+    #print(J)
+    G = np.array(J)
+    print(G)'''

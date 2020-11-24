@@ -1,5 +1,5 @@
 #%%
-%matplotlib auto
+#%matplotlib auto
 import numpy as np
 import matplotlib.pyplot as plt
 #%%
@@ -172,6 +172,7 @@ def G_cam3(x,params):
     for i in range(x_sensors.shape[0]):
         dist = dist_(x_c,y_c,x_sensors[i,0],x_sensors[i,1])
         phi = phi_(x_c,y_c,x_sensors[i,0],x_sensors[i,1],psi)
+
         G[i*2,:] = np.array([(x_c-x_sensors[i,0]),(y_c-x_sensors[i,1]),0])/dist
         G[i*2+1,:] = np.array([(y_c-x_sensors[i,1])/(dist*dist),(x_sensors[i,0]-x_c)/(dist*dist),-1])
     return G
@@ -219,7 +220,7 @@ if g == g_cam1:
     x = np.array([48.08358732, 58.76823964])
 else:
     x = np.array([48.08358732, 58.76823964,np.pi/2])   #<-- localization
-    x = np.array([17, 60,np.pi/2])   #<-- tracking
+    #x = np.array([17, 60,np.pi/2])   #<-- tracking
 
 
 
@@ -242,7 +243,7 @@ else:
 #%%
 #sensor position
 #QR SENSOR 4 28 29 30 36
-# x_sensors = np.array([[0,35.65],[0,71.55],[0,59.55],[0,47.55],[0,84]])
+x_sensors = np.array([[0,35.65],[0,71.55],[0,59.55],[0,47.55],[0,84]])
 #QR SENSOR 21 25 26 27 31
 # x_sensors = np.array([[37.25,120],[49.75,120],[61.75,120],[73.75,120],[85.95,120]])
 
@@ -334,16 +335,38 @@ for method,params in zip(methods,params_list):
     if method== 'grad-desc':
         #gradient descent step
         xhat_history_GD, J_history_GD = lsqsolve(y,g,G,x_init,params,method=method)
+        print('xhat_history_GD ', np.shape(xhat_history_GD))
+        theta = xhat_history_GD[2,-1]
+        x_ = xhat_history_GD[0,-1]
+        y_ = xhat_history_GD[1,-1]
+        print('x_ :{}, y_:{}, theta:{}'.format(x_,y_,theta))
+        plt.figure()
+        plt.arrow(x_, y_, np.cos(theta), np.sin(theta))
+        #plt.plot(xhat_history_GD, label='xhat_history_GD')
+        #plt.legend()
+        plt.show()
     elif method == 'gauss-newton':
         if not params['Line_search']:
             xhat_history_GN, J_history_GN = lsqsolve(y,g,G,x_init,params,method=method)
+            #plt.plot(xhat_history_GN, label='xhat_history_GN')
+            #plt.legend()
+            #plt.show()
         else:
             xhat_history_GN_LS, J_history_GN_LS = lsqsolve(y,g,G,x_init,params,method=method)
+            #plt.plot(xhat_history_GN_LS, label='xhat_history_GN_LS')
+            #plt.legend()
+            #plt.show()
     elif method == 'levenberg-marquardt':
         if not params['scaled_LM']:
             xhat_history_LM, J_history_LM = lsqsolve(y,g,G,x_init,params,method=method)
+            #plt.plot(xhat_history_LM, label='xhat_history_LM')
+            #plt.legend()
+            #plt.show()
         else:
             xhat_history_LM_SCL, J_history_LM_SCL = lsqsolve(y,g,G,x_init,params,method=method)
+            #plt.plot(xhat_history_LM_SCL, label='xhat_history_LM_SCL')
+            #plt.legend()
+            #plt.show()
 
 #%%
 # """ contour plotting of result
@@ -421,5 +444,5 @@ for method,params in zip(methods,params_list):
         else:
             plt.loglog(J_history_LM_SCL,'--ko',linewidth=0.5)
 
-
+plt.show()
 #%%

@@ -12,9 +12,13 @@ import lsqSolve as lsqS
 import pathlib
 sns.set()
 #%%
-parent_path = pathlib.Path.home()#('/media/muhammad/Data/')
-parent_path = parent_path/'Dropbox/09. Aalto Postdoc/DiddyBorg_experiment'
-Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=parent_path/'test-run-camera.csv',is_linear=False,start_index=154)
+#parent_path = pathlib.Path.home()#('/media/muhammad/Data/')
+#parent_path = parent_path/'Dropbox/09. Aalto Postdoc/DiddyBorg_experiment'
+#Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=parent_path/'test-run-camera.csv',is_linear=False,start_index=154)
+
+camera_file = 'Datasets/data/task5/camera_localization_task5.csv'
+Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=camera_file,is_linear=False,start_index=0)
+
 #%%
 
 x_init = np.array([17,60,0])
@@ -95,6 +99,6 @@ ax.add_patch(p)
 p = mpatches.Circle((x[end_index,0], x[end_index,1]), 1,color='black')
 ax.add_patch(p)
 ax.plot(x[:end_index,0],x[:end_index,1],'-r',linewidth=4,alpha=0.5)
-
+plt.show()
 
 # %%
