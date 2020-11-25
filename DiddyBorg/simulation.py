@@ -13,16 +13,29 @@ sns.set()
 n_qr_codes_min = 3
 deviation_max = 5e2
 
-parent_path = pathlib.Path.home()
+'''parent_path = pathlib.Path.home()
 parent_path = parent_path/'Dropbox/09. Aalto Postdoc/DiddyBorg_experiment'
 IMU = sf.Sensor('IMU',sf.IMU_COLUMNS,meas_record_file=parent_path/'test-run-imu.csv',is_linear=True,start_index=3686)
 IMU_static = sf.Sensor('IMU_static',sf.IMU_COLUMNS,meas_record_file=parent_path/'static_position_IMU.csv',is_linear=True)
 Motor_input = sf.Sensor('Motor_input',sf.MOTOR_COLUMNS,meas_record_file=parent_path/'test-run-Motor-Control.csv',is_linear=True)
 Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=parent_path/'test-run-camera.csv',is_linear=False,start_index=154)
+'''
+
+camera_file = 'Datasets/data/task6/camera_tracking_task6.csv'
+imu_file = 'Datasets/data/task6/imu_tracking_task6.csv'
+imu_static = 'Datasets/data/task1/imu_reading_task1.csv'
+motor_file = 'Datasets/data/task6/motor_control_tracking_task6.csv'
+
+IMU = sf.Sensor('IMU',sf.IMU_COLUMNS,meas_record_file=imu_file,is_linear=True,start_index=3686)
+IMU_static = sf.Sensor('IMU_static',sf.IMU_COLUMNS,meas_record_file=imu_static,is_linear=True)
+Motor_input = sf.Sensor('Motor_input',sf.MOTOR_COLUMNS,meas_record_file=motor_file,is_linear=True)
+Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=camera_file,is_linear=False,start_index=154)
+
 #%%
 
 bias_omega_z = np.mean(IMU_static.meas_record[:,7])
 x_init = np.array([17,60,0.])
+#x_init = np.array([15.7, 47.5, 90.0])
 x = np.zeros((Motor_input.meas_record.shape[0]+IMU.meas_record.shape[0],3),dtype=np.float)
 x[0,:] = x_init
 t = np.zeros(x.shape[0])
@@ -177,27 +190,33 @@ for i in range(1,x_d.shape[0]):
         t[i] = Motor_input.current_time
         params['dt'] = t[i]-t[i-1]
         params['u'][:2] = Motor_input.get_measurement()
+
     x_d[i,:] = rnmf.rungeKutta(x_d[i-1,:],rnmf.robot_f,params)
 # %%
-skip=30
+skip=1# 30
 end_index=(x.shape[0]-1)//3
 fig, ax = plt.subplots(figsize=(15, 15))
-q = ax.quiver(x[:end_index:skip,0], x[:end_index:skip,1], -np.sin(x[:end_index:skip,2]), np.cos(x[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='blue')
-p = mpatches.Circle((x[0,0], x[0,1]), 1,color='red')
-ax.add_patch(p)
-p = mpatches.Rectangle((x[end_index,0], x[end_index,1]) ,3,3,color='blue')
-ax.add_patch(p)
-ax.plot(x[:end_index,0],x[:end_index,1],'-r',linewidth=4,alpha=0.5, label='EKF')
-plt.tight_layout()
-q = ax.quiver(x_d[:end_index:skip,0], x_d[:end_index:skip,1], -np.sin(x_d[:end_index:skip,2]), np.cos(x_d[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='green')
-p = mpatches.Circle((x_d[0,0], x_d[0,1]), 1,color='red')
-ax.add_patch(p)
-p = mpatches.Rectangle((x_d[end_index,0], x_d[end_index,1]),3, 3,color='green')
-ax.add_patch(p)
-ax.plot(x_d[:end_index,0],x_d[:end_index,1],'-k',linewidth=4,alpha=0.5, label='dead reckoning')
-plt.tight_layout()
+
+#q = ax.quiver(x[:end_index:skip,0], x[:end_index:skip,1], -np.sin(x[:end_index:skip,2]), np.cos(x[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='blue')
+
+#p = mpatches.Circle((x[0,0], x[0,1]), 1,color='red')
+#ax.add_patch(p)
+
+#p = mpatches.Rectangle((x[end_index,0], x[end_index,1]) ,3,3,color='blue')
+#ax.add_patch(p)
+
+ax.plot(x[:end_index,0],x[:end_index,1],'-r',linewidth=1,alpha=1, label='EKF')
+ax.legend()
+
+#q = ax.quiver(x_d[:end_index:skip,0], x_d[:end_index:skip,1], -np.sin(x_d[:end_index:skip,2]), np.cos(x_d[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='green')
+#p = mpatches.Circle((x_d[0,0], x_d[0,1]), 1,color='red')
+#ax.add_patch(p)
+
+#p = mpatches.Rectangle((x_d[end_index,0], x_d[end_index,1]),3, 3,color='green')
+#ax.add_patch(p)
+
+ax.plot(x_d[:end_index,0],x_d[:end_index,1],'-k',linewidth=2,alpha=1, label='dead reckoning')
+ax.legend()
+
 plt.legend()
-# %%
-
-
-# %%
+plt.show()

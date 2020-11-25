@@ -4,11 +4,11 @@ import pandas as pd
 import sensor_fusion as sf
 import robot_n_measurement_functions as rnmf
 import lsqSolve as lsqS
+import matplotlib.patches as mpatches
+import math
 
 class Car():
-    def __init__(self, csvFile=None):
-        self.csvFile = csvFile
-        self.Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=csvFile,is_linear=False,start_index=0)
+    def __init__(self):
 
         self.x_true = np.array([61.0, 33.9, 90.0])
         self.x_init = np.array([0,0,0])
@@ -17,7 +17,10 @@ class Car():
         self.f = rnmf.PERCEIVED_FOCAL_LENGTH  #focal length pixel
         print('h0:{}, f:{}'.format(self.h0, self.f))
 
-    def localize(self):
+    def localize(self,csvFile = None):
+        self.csvFile = csvFile
+        self.Camera = sf.Sensor('Camera', sf.CAMERA_COLUMNS, meas_record_file=csvFile, is_linear=False, start_index=0)
+
         R_one_diag = np.array([2, 10])
         I_max,gamma,N = 20,1,10
         params_LSQ = {'x_sensors': None,
@@ -120,10 +123,147 @@ class Car():
 
         plt.show()
 
+    def Estimate_pose_based_on_camera(self,cam_csv=None):
+        self.Camera = sf.Sensor('Camera',sf.CAMERA_COLUMNS,meas_record_file=cam_csv,is_linear=False,start_index=0)
+        self.x_true = np.array([15.7, 47.5, 90.0])
 
+        self.x_init = np.array([0,0,0])
+        x = np.zeros((self.Camera.meas_record.shape[0] // 3, 3), dtype=np.float)
+        x[0, :] = self.x_init
+        t = np.zeros(x.shape[0])
+        t[0] = self.Camera.time[0]
+
+        R_one_diag = np.array([2, 20])
+        I_max,gamma,N = 10,1, 10
+        params_LSQ = {'x_sensors': None,
+                      'R': None,
+                      'LR': None,
+                      'Rinv': None,
+                      'gamma': gamma,
+                      'I_max': I_max,
+                      'Line_search': False,
+                      'Line_search_n_points': N,
+                      'Jwls': lsqS.Jwls
+                      }
+        self.Camera.reset_sampling_index()
+        i = 0
+        while (self.Camera.current_sample_index < self.Camera.time.shape[0] and i < x.shape[0] - 1):
+            i += 1
+            y_ = self.Camera.get_measurement()
+            n_qr_codes = y_.shape[0]
+
+            if n_qr_codes < 3:
+                x[i, :] = x[i - 1, :]
+                continue
+
+            w,h,c_x = y_[:, 3],y_[:, 4],y_[:, 1]
+
+            di = self.h0 * self.f / h
+            phi = np.arctan2(c_x, self.f)
+            angle_qr = np.arccos(np.minimum(w, h) / h)
+
+            corrected_dist = di / np.cos(phi) + 0.5 * self.h0 * np.sin(angle_qr)
+            y_[:, 5] = corrected_dist
+            y = y_[:, 5:].flatten()
+
+            qr_row = y_[:, 0].astype('int')
+            qr_pos = rnmf.QRCODE_LOCATIONS[qr_row, 1:]
+            params_LSQ['x_sensors'] = qr_pos
+            R = np.diag(np.kron(np.ones(n_qr_codes), R_one_diag))
+            params_LSQ['R'] = R
+            params_LSQ['LR'] = np.linalg.cholesky(R).T
+            params_LSQ['Rinv'] = np.diag(1 / np.diag(R))
+            xhat_history_GN, J_history_GN = lsqS.lsqsolve(y, rnmf.h_cam, rnmf.H_cam, x[i - 1, :], params_LSQ,
+                                                          method='gauss-newton')
+            x[i, :] = xhat_history_GN[:, -1]
+
+        plt.figure()
+        plt.title('Camera measurements & Jwls estimation')
+        plt.plot(x[1:,0],x[1:,1],'-ok',linewidth=1,markersize=3, label='position')
+        phi = x[1:,2]
+        #plt.quiver(x[1:,0], x[1:,1], np.cos(phi), np.sin(phi),linewidth=2.9, alpha=1.0, color='red', label='Orientation')
+        plt.quiver(x[1:, 0], x[1:, 1], -np.sin(phi), np.cos(phi),linewidth=2.9, alpha=1.0, color='red', label='Orientation')
+        plt.grid(True)
+        plt.quiver(x[-1,0], x[-1,1], -np.sin(phi[-1]), np.cos(phi[-1]),
+                         linewidth=3., alpha=1.0, color='green', label='final-pose')
+
+        plt.quiver(self.x_init[0], self.x_init[1], np.cos(np.deg2rad(self.x_init[-1])),
+                         np.sin(np.deg2rad(self.x_init[-1])),
+                         linewidth=3., alpha=1.0, color='blue', label='init-pose')
+        plt.legend()
+        plt.show()
+
+    def Estimate_pose_Dead_reckoning(self, motor_file=None, cmd = True):
+        def observation(x, u, DT):
+            state = motion_model(x, u, DT)
+            return state
+
+        def motion_model(x, u, DT):
+            F = np.array([[1.0, 0, 0, 0],
+                          [0, 1.0, 0, 0],
+                          [0, 0, 1.0, 0],
+                          [0, 0, 0, 0]])
+
+            B = np.array([[DT * math.cos(x[2, 0]), 0],
+                          [DT * math.sin(x[2, 0]), 0],
+                          [0.0, DT],
+                          [1.0, 0.0]])
+
+            return F @ x + B @ u
+
+        #Timestamp, v,w
+        motor = pd.read_csv(motor_file, header=None)
+        print('motor ', np.shape(motor))
+
+        # state  [x y yaw v]'
+        x_dead = np.zeros((4, 1)) # Dead reckoning
+        x_dead = np.array([[15.7], [47.5], [90], [0]]) # Dead reckoning
+
+        print('x_dead ',np.shape(x_dead))
+        x_dead_history = x_dead
+
+        for i in range(1,len(motor)):
+            t,v,w = motor.iloc[i,:]
+            DT = t-motor.iloc[i-1,0]
+            u = np.array([[v], [w]])
+            x_dead  = observation(x_dead, u, DT)
+            x_dead_history = np.hstack((x_dead_history, x_dead))
+
+            plt.cla()
+            x_pos = x_dead_history[0, :].flatten()
+            y_pos = x_dead_history[1, :].flatten()
+            plt.plot(x_pos, y_pos, label='XY - position')
+            theta = x_dead_history[2, :].flatten()
+            plt.quiver(x_pos, y_pos,
+                             np.cos(theta), np.sin(theta),
+                             linewidth=0.3, alpha=0.8, color='red', label = 'orientation')
+
+            plt.quiver(x_pos[0], y_pos[0], np.cos(theta[0]),
+                             np.sin(theta[0]),
+                             linewidth=2, alpha=1.0, color='green', label='init-pose')
+            plt.quiver(x_pos[-1], y_pos[-1], np.cos(theta[-1]),
+                       np.sin(theta[-1]),
+                       linewidth=2, alpha=1.0, color='blue', label='final-pose')
+            plt.axis("equal")
+            plt.title('dead-reckoning')
+            plt.grid(True)
+            plt.legend()
+
+            plt.xlabel('X')
+            plt.ylabel('Y')
+            if cmd:
+                plt.pause(0.01)
+            if i==len(motor)-1:
+                plt.show()
 
 if __name__ == '__main__':
     camera_file = 'Datasets/data/task5/camera_localization_task5.csv'
+    car = Car()
+    #car.localize(csvFile=camera_file)
 
-    car = Car(csvFile=camera_file)
-    car.localize()
+    camera_file = 'Datasets/data/task6/camera_tracking_task6.csv'
+    imu_file = 'Datasets/data/task6/imu_tracking_task6.csv'
+    motor_file = 'Datasets/data/task6/motor_control_tracking_task6.csv'
+
+    #car.Estimate_pose_based_on_camera(cam_csv=camera_file)
+    car.Estimate_pose_Dead_reckoning(motor_file = motor_file, cmd = True)
