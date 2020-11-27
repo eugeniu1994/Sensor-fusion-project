@@ -169,6 +169,30 @@ for i in range(1,x.shape[0]):
             
         x[i,:] = x_next
 
+skip=1# 30
+end_index=(x.shape[0]-1)//3
+fig, ax = plt.subplots(figsize=(15, 15))
+
+#q = ax.quiver(x[:end_index:skip,0], x[:end_index:skip,1], -np.sin(x[:end_index:skip,2]), np.cos(x[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='blue')
+
+#p = mpatches.Circle((x[0,0], x[0,1]), 1,color='red')
+#ax.add_patch(p)
+
+#p = mpatches.Rectangle((x[end_index,0], x[end_index,1]) ,3,3,color='blue')
+#ax.add_patch(p)
+
+ax.plot(x[:end_index,0],x[:end_index,1],'-r',linewidth=1,alpha=1, label='EKF')
+ax.legend()
+
+#q = ax.quiver(x_d[:end_index:skip,0], x_d[:end_index:skip,1], -np.sin(x_d[:end_index:skip,2]), np.cos(x_d[:end_index:skip,2]),headwidth=1,width=0.0051,alpha=0.8,color='green')
+#p = mpatches.Circle((x_d[0,0], x_d[0,1]), 1,color='red')
+#ax.add_patch(p)
+
+#p = mpatches.Rectangle((x_d[end_index,0], x_d[end_index,1]),3, 3,color='green')
+#ax.add_patch(p)
+
+plt.legend()
+plt.show()
 
 #%%
 # OLD CODE FOR DEAD RECKONING
