@@ -136,6 +136,4 @@ def plot():
     ax.legend()
     plt.show()
 
-
-
 plot()

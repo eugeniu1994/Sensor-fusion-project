@@ -6,6 +6,10 @@ import robot_n_measurement_functions as rnmf
 import lsqSolve as lsqS
 import matplotlib.patches as mpatches
 import math
+fig_size = (8,8)
+from typing import Callable
+import scipy.linalg as sla
+
 from EKF import *
 
 np.random.seed(2020)
@@ -343,6 +347,51 @@ class Car():
         plt.axis('equal')
         plt.show()
 
+    def EKF_estimate2(self, imu_file=None, camera_file=None):
+        IMU = pd.read_csv(imu_file, header=None)
+        print('IMU ',np.shape(IMU))
+        t_robot = IMU.iloc[:, 0]
+        GyZ = IMU.iloc[:, 8]
+        w = np.array(GyZ).flatten()
+        cam = pd.read_csv(camera_file, header=None)
+        print('cam ', np.shape(cam))
+
+        self.Camera = sf.Sensor('Camera', sf.CAMERA_COLUMNS, meas_record_file=camera_file, is_linear=False,start_index=0)
+        self.x_true = np.array([15.7, 47.5, 90.0])
+        self.x_init = self.x_true
+        x = np.zeros((self.Camera.meas_record.shape[0] // 3, 3), dtype=np.float)
+        print('x shape is ', np.shape(x))
+        self.Camera.reset_sampling_index()
+        i,vel = 0, 5.5
+        landmarks,inputs = [],[]
+        while (self.Camera.current_sample_index < self.Camera.time.shape[0] and i < x.shape[0] - 1):
+            i += 1
+            y_ = self.Camera.get_measurement()
+            if y_.shape[0] < 2:
+                continue
+
+            qr_row = y_[:, 0].astype('int')
+            camera_time = self.Camera.current_time
+            landmark = rnmf.QRCODE_LOCATIONS[qr_row, 1:]
+            closest_index = IMU.iloc[:, 0].sub(camera_time).abs().idxmin()
+            closest_u = np.array(IMU.iloc[closest_index, 8])
+            #print('qr_row len:{}, qr_row:{}, time:{}, landmarks:{},closest_u:{}'.format(np.shape(qr_row),qr_row,camera_time, np.shape(landmark),closest_u))
+
+            u = [vel, closest_u]  # steering command (vel, steering angle radians)
+            inputs.append(u)
+            landmarks.append(landmark)
+
+        print('landmarks:{},  inputs:{}'.format(np.shape(landmarks), np.shape(inputs)))
+        [plt.scatter(landmark[:, 0], landmark[:, 1], marker='s', s=60) for landmark in landmarks]
+        phi = np.deg2rad(self.x_init[-1])
+        plt.quiver(self.x_init[0], self.x_init[1], np.cos(phi), np.sin(phi),
+                   linewidth=2., alpha=1.0, color='black', label='init-pose')
+
+        plt.grid(True)
+        plt.legend()
+        plt.axis('equal')
+        plt.show()
+
 if __name__ == '__main__':
     camera_file = 'Datasets/data/task5/camera_localization_task5.csv'
     car = Car()
@@ -352,8 +401,8 @@ if __name__ == '__main__':
     imu_file = 'Datasets/data/task6/imu_tracking_task6.csv'
     motor_file = 'Datasets/data/task6/motor_control_tracking_task6.csv'
 
-    car.Estimate_pose_based_on_camera(cam_csv=camera_file)
+    #car.Estimate_pose_based_on_camera(cam_csv=camera_file)
     #car.Estimate_pose_Dead_reckoning(motor_file = motor_file, cmd = True)
 
-    #car.EKF_estimate(motor_file=motor_file, camera_file=camera_file)
-    #car.EKF_estimate2(motor_file=motor_file, camera_file=camera_file)
+    car.EKF_estimate(motor_file=motor_file, camera_file=camera_file)
+    #car.EKF_estimate2(imu_file=imu_file, camera_file=camera_file)
