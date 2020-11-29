@@ -1,296 +1,225 @@
-import numpy as np
-import numpy.random
-from numpy.random import randn, random, uniform
-import scipy.stats
-
-
-class RobotLocalizationParticleFilter(object):
-
-    def __init__(self, N, x_dim, y_dim, landmarks, measure_std_error):
-        self.particles = np.empty((N, 3))  # x, y, heading
-        self.N = N
-        self.x_dim = x_dim
-        self.y_dim = y_dim
-        self.landmarks = landmarks
-        self.R = measure_std_error
-
-        # distribute particles randomly with uniform weight
-        self.weights = np.empty(N)
-        # self.weights.fill(1./N)
-        self.particles[:, 0] = uniform(0, x_dim, size=N)
-        self.particles[:, 1] = uniform(0, y_dim, size=N)
-        self.particles[:, 2] = uniform(0, 2 * np.pi, size=N)
-
-    def create_uniform_particles(self, x_range, y_range, hdg_range):
-        self.particles[:, 0] = uniform(x_range[0], x_range[1], size=N)
-        self.particles[:, 1] = uniform(y_range[0], y_range[1], size=N)
-        self.particles[:, 2] = uniform(hdg_range[0], hdg_range[1], size=N)
-        self.particles[:, 2] %= 2 * np.pi
-
-    def create_gaussian_particles(self, mean, var):
-        self.particles[:, 0] = mean[0] + randn(self.N) * var[0]
-        self.particles[:, 1] = mean[1] + randn(self.N) * var[1]
-        self.particles[:, 2] = mean[2] + randn(self.N) * var[2]
-        self.particles[:, 2] %= 2 * np.pi
-
-    def predict(self, u, std, dt=1.):
-        """ move according to control input u (heading change, velocity)
-        with noise std"""
-
-        self.particles[:, 2] += u[0] + randn(self.N) * std[0]
-        self.particles[:, 2] %= 2 * np.pi
-
-        d = u[1] * dt + randn(self.N) * std[1]
-        self.particles[:, 0] += np.cos(self.particles[:, 2]) * d
-        self.particles[:, 1] += np.sin(self.particles[:, 2]) * d
-
-    def update(self, z):
-        self.weights.fill(1.)
-        for i, landmark in enumerate(self.landmarks):
-            distance = np.linalg.norm(self.particles[:, 0:2] - landmark, axis=1)
-            self.weights *= scipy.stats.norm(distance, self.R).pdf(z[i])
-            # self.weights *= Gaussian(distance, self.R, z[i])
-
-        self.weights += 1.e-300
-        self.weights /= sum(self.weights)  # normalize
-
-    def neff(self):
-        return 1. / np.sum(np.square(self.weights))
-
-    def resample(self):
-        cumulative_sum = np.cumsum(self.weights)
-        cumulative_sum[-1] = 1.  # avoid round-off error
-        indexes = np.searchsorted(cumulative_sum, random(self.N))
-
-        # resample according to indexes
-        self.particles = self.particles[indexes]
-        self.weights = self.weights[indexes]
-        self.weights /= np.sum(self.weights)  # normalize
-
-    def resample_from_index(self, indexes):
-        assert len(indexes) == self.N
-        indexes = np.array(indexes, dtype=int)
-        self.particles = self.particles[indexes]
-        self.weights = self.weights[indexes]
-        self.weights /= np.sum(self.weights)
-
-    def estimate(self):
-        """ returns mean and variance """
-        pos = self.particles[:, 0:2]
-        mu = np.average(pos, weights=self.weights, axis=0)
-        var = np.average((pos - mu) ** 2, weights=self.weights, axis=0)
-
-        return mu, var
-
-    def mean(self):
-        """ returns weighted mean position"""
-        return np.average(self.particles[:, 0:2], weights=self.weights, axis=0)
-
-
-def residual_resample(w):
-    N = len(w)
-
-    w_ints = np.floor(N * w).astype(int)
-    residual = w - w_ints
-    residual /= sum(residual)
-
-    indexes = np.zeros(N, 'i')
-    k = 0
-    for i in range(N):
-        for j in range(w_ints[i]):
-            indexes[k] = i
-            k += 1
-    cumsum = np.cumsum(residual)
-    cumsum[N - 1] = 1.
-    for j in range(k, N):
-        indexes[j] = np.searchsorted(cumsum, random())
+import pygame
+import random
+import time
+from math import *
+from copy import deepcopy
+
+display_width = 800
+display_height = 800
 
-    return indexes
+world_size = display_width
 
-
-def residual_resample2(w):
-    N = len(w)
-
-    w_ints = np.floor(N * w).astype(int)
-
-    R = np.sum(w_ints)
-    m_rdn = N - R
-
-    Ws = (N * w - w_ints) / m_rdn
-    indexes = np.zeros(N, 'i')
-    i = 0
-    for j in range(N):
-        for k in range(w_ints[j]):
-            indexes[i] = j
-            i += 1
-    cumsum = np.cumsum(Ws)
-    cumsum[N - 1] = 1  # just in case
-
-    for j in range(i, N):
-        indexes[j] = np.searchsorted(cumsum, random())
-
-    return indexes
+red = (200, 0, 0)
+blue = (0, 0, 255)
+green = (0, 155, 0)
+yellow = (255, 255, 0)
+white = (255, 255, 255)
+black = (0, 0, 0)
 
-
-def systemic_resample(w):
-    N = len(w)
-    Q = np.cumsum(w)
-    indexes = np.zeros(N)
-    t = np.linspace(0, 1 - 1 / N, N) + random() / N
-
-    i, j = 0, 0
-    while i < N and j < N:
-        while Q[j] < t[i]:
-            j += 1
-        indexes[i] = j
-        i += 1
-
-    return indexes
-
-
-def Gaussian(mu, sigma, x):
-    # calculates the probability of x for 1-dim Gaussian with mean mu and var. sigma
-    g = (np.exp(-((mu - x) ** 2) / (sigma ** 2) / 2.0) /
-         np.sqrt(2.0 * np.pi * (sigma ** 2)))
-    for i in range(len(g)):
-        g[i] = max(g[i], 1.e-229)
-    return g
-
-
-if __name__ == '__main__':
-
-    DO_PLOT_PARTICLES = False
-    from numpy.random import seed
-    import matplotlib.pyplot as plt
-
-    # plt.figure()
-
-    seed(5)
-    for count in range(1):
-        print()
-        print(count)
-        # numpy.random.set_state(fail_state)
-        # if count == 12:
-        #    #fail_state = numpy.random.get_state()
-        #    DO_PLOT_PARTICLES = True
-
-        N = 4000
-        sensor_std_err = .1
-        landmarks = np.array([[-1, 2], [2, 4], [10, 6], [18, 25]])
-        NL = len(landmarks)
-
-        # landmarks = [[-1, 2], [2,4]]
-
-        pf = RobotLocalizationParticleFilter(N, 20, 20, landmarks, sensor_std_err)
-        # pf.create_gaussian_particles([3, 2, 0], [5, 5, 2])
-        pf.create_uniform_particles((0, 20), (0, 20), (0, 6.28))
-
-        if DO_PLOT_PARTICLES:
-            plt.scatter(pf.particles[:, 0], pf.particles[:, 1], alpha=.2, color='g')
-
-        xs = []
-        for x in range(18):
-            zs = []
-            pos = (x + 1, x + 1)
+car_length = 60
+car_width = 40
 
-            for landmark in landmarks:
-                d = np.sqrt((landmark[0] - pos[0]) ** 2 + (landmark[1] - pos[1]) ** 2)
-                zs.append(d + randn() * sensor_std_err)
+car_img = pygame.image.load("car60_40.png")
 
-            zs = np.linalg.norm(landmarks - pos, axis=1) + randn(NL) * sensor_std_err
+origin = (display_width / 2, display_height / 2)
 
-            # move diagonally forward to (x+1, x+1)
-            pf.predict((0.00, 1.414), (.2, .05))
-            pf.update(z=zs)
-            if x == 0:
-                print(max(pf.weights))
-            # while abs(pf.neff() -N) < .1:
-            #    print('neffing')
-            #    pf.create_uniform_particles((0,20), (0,20), (0, 6.28))
-            #    pf.update(z=zs)
-            # print(pf.neff())
-            # indexes = residual_resample2(pf.weights)
-            indexes = systemic_resample(pf.weights)
+pygame.init()
 
-            pf.resample_from_index(indexes)
-            # pf.resample()
+screen = pygame.display.set_mode((display_width, display_height))
+pygame.display.set_caption("Moving robot")
+clock = pygame.time.Clock()
 
-            mu, var = pf.estimate()
-            xs.append(mu)
-            if DO_PLOT_PARTICLES:
-                plt.scatter(pf.particles[:, 0], pf.particles[:, 1], alpha=.2)
-                plt.scatter(pos[0], pos[1], marker='*', color='r')
-                plt.scatter(mu[0], mu[1], marker='s', color='r')
-                plt.pause(.01)
+screen.fill(white)
 
-        xs = np.array(xs)
-        plt.plot(xs[:, 0], xs[:, 1])
-        plt.show()
 
-from numpy.linalg import norm
+class robot:
+    def __init__(self):
+        self.x = random.random() * world_size
+        self.y = random.random() * world_size
+        self.orientation = random.random() * 2.0 * pi
+        self.forward_noise = 0.0
+        self.turn_noise = 0.0
+        self.sense_noise = 0.0  # or bearing_noise
 
+    def set(self, x, y, orientation):
+        if x >= world_size or x < 0:
+            raise ValueError('X coordinate out of bound')
+        if y >= world_size or y < 0:
+            raise ValueError('Y coordinate out of bound')
+        if orientation >= 2 * pi or orientation < 0:
+            raise ValueError('Orientation must be in [0..2pi]')
 
-def run_pf1(N, iters=18, sensor_std_err=.1,
-            do_plot=True, plot_particles=False,
-            xlim=(0, 20), ylim=(0, 20),
-            initial_x=None):
-    landmarks = np.array([[-1, 2], [5, 10], [12, 14], [18, 21]])
-    NL = len(landmarks)
-    pf = RobotLocalizationParticleFilter(N, 20, 20, landmarks, sensor_std_err)
-    if initial_x is not None:
-        pf.create_gaussian_particles(mean=initial_x, var=(5, 5, np.pi / 4))
+        self.x = x
+        self.y = y
+        self.orientation = orientation
 
-    if plot_particles:
-        alpha = .20
-        if N > 5000:
-            alpha *= np.sqrt(5000) / np.sqrt(N)
-        plt.scatter(pf.particles[:, 0], pf.particles[:, 1], alpha=alpha, color='g')
+    def set_noise(self, f_noise, t_noise, s_noise):
+        self.forward_noise = f_noise
+        self.turn_noise = t_noise
+        self.sense_noise = s_noise
 
-    xs = []
-    pos = np.array([0., 0.])
-    for x in range(iters):
-        pos += (1, 1)  # robot position
+    def move(self, turn, forward):
+        if forward < 0:
+            raise ValueError('Cant move backwards')
 
-        # distance from robot to each landmark
-        zs = norm(landmarks - pos, axis=1) + randn(NL) * sensor_std_err
+        self.orientation = self.orientation + turn + random.gauss(0.0, self.turn_noise)
+        self.orientation %= 2 * pi
 
-        # move diagonally forward to (x+1, x+1)
-        pf.predict((0.00, 1.414), (.2, .05))
-        pf.update(z=zs)
-        pf.resample()
+        dist = forward + random.gauss(0.0, self.forward_noise)
+        self.x = self.x + dist * cos(self.orientation)
+        self.y = self.y - dist * sin(self.orientation)
 
-        mu, var = pf.estimate()
-        xs.append(mu)
-        if plot_particles:
-            plt.scatter(pf.particles[:, 0], pf.particles[:, 1], color='k', marker=',', s=1)
-        p1 = plt.scatter(pos[0], pos[1], marker='+', color='k', s=180, lw=3)
-        p2 = plt.scatter(mu[0], mu[1], marker='s', color='r')
+        self.x %= world_size
+        self.y %= world_size
 
-    xs = np.array(xs)
-    # plt.plot(xs[:, 0], xs[:, 1])
-    plt.legend([p1, p2], ['Actual', 'PF'], loc=4, numpoints=1)
-    plt.xlim(*xlim)
-    plt.ylim(*ylim)
-    print('final position error, variance:', mu, var)
-    plt.show()
+        temp = robot()
+        temp.set_noise(0.001, 0.1, 0.1)
+        temp.set(self.x, self.y, self.orientation)
+        temp.set_noise(self.forward_noise, self.turn_noise, self.sense_noise)
+        return temp
 
+    def sense(self, landmarks, add_noise=False):
+        Z = []
+        for i in range(len(landmarks)):
+            bearing_angle = atan2(landmarks[i][0] - self.y, landmarks[i][1] - self.x) - self.orientation
 
-from numpy.random import seed
-
-seed(2)
-run_pf1(N=5000, plot_particles=True)
-
-
-seed(2)
-run_pf1(N=5000, iters=8, plot_particles=True, xlim=(0,8), ylim=(0,8))
-
-
-seed(2)
-run_pf1(N=100000, iters=8, plot_particles=True, xlim=(0,8), ylim=(0,8))
-
-
-seed(3)
-run_pf1(N=5000, plot_particles=True, ylim=(-20, 20))
-
-seed(3)
-run_pf1(N=5000, plot_particles=True, initial_x=(1,1, np.pi/4))
+            if add_noise:
+                bearing_angle += random.gauss(0.0, self.bearing_noise)
+
+            # avoid angles greater than 2pi
+            bearing_angle %= 2 * pi
+            Z.append(bearing_angle)
+
+        return Z  # Return vector Z of 4 bearings.
+
+    def measurement_prob(self, measurements, landmarks):
+        # calculate the correct measurement
+        predicted_measurements = self.sense(landmarks)
+
+        # compute errors
+        error = 1.0
+        for i in range(len(measurements)):
+            error_bearing = abs(measurements[i] - predicted_measurements[i])
+            error_bearing = (error_bearing + pi) % (2.0 * pi) - pi  # truncate
+
+            # update Gaussian
+            error *= (exp(- (error_bearing ** 2) / (self.sense_noise ** 2) / 2.0) /
+                      sqrt(2.0 * pi * (self.sense_noise ** 2)))
+
+        return error
+
+    def Gaussian(self, mu, sigma, x):
+
+        # calculates the probability of x for 1-dim Gaussian with mean mu and var. sigma
+        return exp(- ((mu - x) ** 2) / (sigma ** 2) / 2.0) / sqrt(2.0 * pi * (sigma ** 2))
+
+
+def draw_robot(car):
+    x = car.x
+    y = car.y
+    orientation = car.orientation
+    img = pygame.transform.rotate(car_img, orientation * 180 / pi)
+    screen.blit(img, (x - 30, y - 20))
+
+
+# # in radians
+# print orientation
+# # in degrees
+# print orientation*180/pi
+# pygame.draw.circle(screen, blue, (int(x), int(y)), 5)
+# rect = pygame.draw.polygon(screen, blue, ((x-car_length/2,y-car_width/2),(x+car_length/2,y-car_width/2), \
+# 	(x + car_length/2, y + car_width/2), (x-car_length/2, y+car_width/2)))
+
+def draw_particles(particles):
+    for i in range(len(particles)):
+        x = particles[i].x
+        y = particles[i].y
+        orientation = particles[i].orientation
+        pygame.draw.circle(screen, green, (int(x), int(y)), 5)
+
+
+landmarks_loc = [[200, 200], [600, 600], [200, 600], [600, 200], [200, 300], [300, 200], [500, 200], \
+                 [200, 200], [200, 500], [300, 600], [500, 600], [600, 500], [600, 300], [400, 200], \
+                 [200, 400], [400, 600], [600, 400]]
+
+car = robot()
+# car.set_noise(0.1, 0.1, 0.1)
+
+orientation = 0
+# in radians
+orientation = orientation * pi / 180
+car.set(origin[0], origin[1], orientation)
+
+exit = False
+
+delta_orient = 0.0
+delta_forward = 0.0
+
+particles = []
+# create particles
+for i in range(1000):
+    particle = robot()
+    # particle.orientation = orientation
+    particle.set_noise(0.001, 0.1, 0.1)
+    particles.append(particle)
+
+while exit == False:
+
+    screen.fill(white)
+    pygame.draw.line(screen, green, (display_width / 2, 0), (display_width / 2, display_height), 1)
+    pygame.draw.line(screen, black, (0, display_height / 2), (display_width, display_height / 2), 1)
+    for i in range(len(landmarks_loc)):
+        pygame.draw.circle(screen, blue, landmarks_loc[i], 20)
+
+    draw_robot(car)
+    draw_particles(particles)
+
+    pygame.display.update()
+    clock.tick(100)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                delta_orient = 0.0175
+            elif event.key == pygame.K_RIGHT:
+                delta_orient = -0.0175
+            elif event.key == pygame.K_UP:
+                delta_forward = 2
+            elif event.key == pygame.K_DOWN:
+                delta_forward = -2
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT or event.key == pygame.K_UP \
+                    or event.key == pygame.K_DOWN:
+                delta_orient = 0.0
+                delta_forward = 0.0
+
+    car.move(delta_orient, delta_forward)
+    particles2 = []
+    for particle in particles:
+        # print "before :",particle.x, particle.y, particle.orientation
+        # particle.orientation = car.orientation
+        particles2.append(particle.move(delta_orient, delta_forward))
+    # print "afer :",particle.x, particle.y, particle.orientation
+
+    particles = particles2
+
+    measurements = car.sense(landmarks_loc)
+
+    weights = []
+    for i in range(1000):
+        weights.append(particles[i].measurement_prob(measurements, landmarks_loc))
+
+    # resampling
+    p = []
+    index = int(random.random() * 1000)
+    beta = 0.0
+    mw = max(weights)
+    for i in range(1000):
+        beta += random.random() * 2.0 * mw
+        while beta > weights[index]:
+            beta -= weights[index]
+            index = (index + 1) % 1000
+        p.append(particles[index])
+    particles = deepcopy(p)
