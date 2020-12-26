@@ -63,9 +63,21 @@ class accelerometer(object):
 
     #Task2
     def Compute_Bias_Gain(self):
-        x = np.array(self.linear_xyz.iloc[:, 0])
-        y = np.array(self.linear_xyz.iloc[:, 1])
-        z = np.array(self.linear_xyz.iloc[:, 2])
+
+        def truncate(signal, prop = 0.05):
+            trunc_len = round(prop*signal.size)
+            return signal[trunc_len:-trunc_len]
+
+        def get_gain_bias(signal):
+            # ki * [-1, 1] + bi = [au, ad]
+            # => ki = (au - ad)/2, bi = (au + ad)/2
+            up_signal = signal[signal >  0.8]
+            dn_signal = signal[signal < -0.8]
+            au = np.mean(up_signal)
+            ad = np.mean(dn_signal)
+            ki = (au - ad)/2
+            bi = (au + ad)/2
+            return ki, bi
 
         def get_Data(values): #found from other implementation
             v_d,v_u = [],[]
@@ -76,13 +88,26 @@ class accelerometer(object):
                     v_d.append(i)
             return np.mean(v_u), np.mean(v_d)
 
-        x_u, x_d = get_Data(x)  #  up and down for x
-        y_u, y_d = get_Data(y)  #  up and down for y
-        z_u, z_d = get_Data(z)  #  up and down for z
+        x = np.array(self.linear_xyz.iloc[:, 0])
+        y = np.array(self.linear_xyz.iloc[:, 1])
+        z = np.array(self.linear_xyz.iloc[:, 2])
+
+        # x_u, x_d = get_Data(x)  #  up and down for x
+        # y_u, y_d = get_Data(y)  #  up and down for y
+        # z_u, z_d = get_Data(z)  #  up and down for z
+
+        kx, bx = get_gain_bias(x)
+        ky, by = get_gain_bias(y)
+        kz, bz = get_gain_bias(z)
 
         # according to given formula
-        self.b = [(x_u + x_d) / 2, (y_u + y_d) / 2, (z_u + z_d) / 2]
-        self.k = [(x_u - x_d) / (2 * self.g), (y_u - y_d) / (2 * self.g), (z_u - z_d) / (2 * self.g)]
+        # self.b = [(x_u + x_d) / 2, (y_u + y_d) / 2, (z_u + z_d) / 2]
+        # self.k = [(x_u - x_d) / (2 * self.g), (y_u - y_d) / (2 * self.g), (z_u - z_d) / (2 * self.g)]
+
+        self.b = [bx, by, bz]
+        self.k = [kx, ky, kz]
+
+
 
 class gyroscope(object):
     def __init__(self, csvFile=None):
@@ -152,7 +177,7 @@ class gyroscope(object):
 
 if __name__ == '__main__':
     # csv for task 1 ----------------------------------------
-    csvFile = 'Datasets/data/task1/imu_reading_task1.csv'
+    csvFile = 'Dataset/data/task1/imu_reading_task1.csv'
     Accelerometer = accelerometer(csvFile)
     Accelerometer.Visualize_Data()
 
@@ -162,7 +187,7 @@ if __name__ == '__main__':
     Gyroscope.Compute_variance()
 
     #Task 2 --------------------------------------------------
-    csvFile = 'Datasets/data/task2/imu_calibration_task2.csv'
+    csvFile = 'Dataset/data/task2/imu_calibration_task2.csv'
     Accelerometer = accelerometer(csvFile)
     Accelerometer.Compute_Bias_Gain()
     Accelerometer.Visualize_Data()

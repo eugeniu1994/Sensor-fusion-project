@@ -198,7 +198,7 @@ class Car():
         plt.show()
 
 if __name__ == '__main__':
-    camera_file = 'Datasets/data/task5/camera_localization_task5.csv'
+    camera_file = 'Dataset/data/task5/camera_localization_task5.csv'
     car = Car()
     car.localize(csvFile=camera_file)
 
